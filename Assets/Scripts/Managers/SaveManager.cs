@@ -55,6 +55,13 @@ public class SaveManager : MonoBehaviour
         {
             Load();
         }
-        Application.quitting += Save;
+    }
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Debug.Log("Выходим...");
+            Save();
+        }
     }
 }
