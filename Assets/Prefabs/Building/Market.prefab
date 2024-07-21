@@ -160,3 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5130526f9e96c419ab303b7b383476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIPrefab: {fileID: 8206725398478018251, guid: 0692659e4d098554f93ff225fd77b5eb,
+    type: 3}
+  bestFitResource: 0
+  bestFitMultiplier: 0

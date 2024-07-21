@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 5431176540720744116}
   - component: {fileID: 5431176540720744011}
   - component: {fileID: 5431176540720744010}
+  - component: {fileID: 5399013457801916016}
   m_Layer: 5
   m_Name: RecipeInSelector
   m_TagString: Untagged
@@ -252,7 +253,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 0}
+  m_SizeDelta: {x: 250, y: 333}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5431176540720744116
 CanvasRenderer:
@@ -338,6 +339,23 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!114 &5399013457801916016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5431176540720744008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417e1ca431382414a9355982b772e323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 5431176541184480342}
+  nameText: {fileID: 5431176539772857309}
+  requiredResourcesRoot: {fileID: 5431176539950977457}
+  materialPrefab: {fileID: 5414453235828373130, guid: 2d5337711ca41d34f972e66beec968d6,
+    type: 3}
 --- !u!1 &5431176541184480340
 GameObject:
   m_ObjectHideFlags: 0

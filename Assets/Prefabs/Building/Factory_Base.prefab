@@ -159,7 +159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6543d6e3f5b440044bccf7edfe0d8e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIPrefab: {fileID: 6334547276209058420, guid: cae117611ad8a514bb1fb795adb96739,
+    type: 3}
   factoryName: 
+  recipes: []
+  upgrades: []
+  level: 0
+  speed: 1
 --- !u!1 &6818841360298890712
 GameObject:
   m_ObjectHideFlags: 0

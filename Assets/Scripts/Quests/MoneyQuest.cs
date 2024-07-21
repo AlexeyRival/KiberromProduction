@@ -9,6 +9,6 @@ public class MoneyQuest : Quest
     public int target;
     public override void Check()
     {
-        complete |= ResourceManager.Instance.IsEnoughtMoney(target);
+        complete |= GameManager.GetManager<ResourceManager>().IsEnoughtMoney(target);
     }
 }

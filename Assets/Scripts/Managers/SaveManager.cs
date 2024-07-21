@@ -5,34 +5,30 @@ using System.IO;
 using System.Text;
 using UnityEngine.Android;
 
-public class SaveManager : MonoBehaviour
+public class SaveManager : Manager
 {
-    #region Singleton
-    public static SaveManager Instance;
-    void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-    #endregion
-    private void Load() 
+    private IEnumerator Load() 
     {
         Debug.Log("LOAD");
-        string[] file = File.ReadAllLines(Path.Combine(Application.persistentDataPath, "save/save.txt"));
-        ResourceManager.Instance.Load(file[0]);
-        QuestManager.Instance.Load(file[1]);
-        Factory[] factories = FindObjectsOfType<Factory>();
-        for (int i = 0; i < factories.Length; ++i)
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "save/save.txt")))
         {
-            factories[i].Load(file[2 + i]);
+            string[] file = File.ReadAllLines(Path.Combine(Application.persistentDataPath, "save/save.txt"));
+            GameManager.GetManager<ResourceManager>().Load(file[0]);
+            GameManager.GetManager<QuestManager>().Load(file[1]);
+            yield return null;
+            Factory[] factories = FindObjectsOfType<Factory>();
+            for (int i = 0; i < factories.Length; ++i)
+            {
+                factories[i].Load(file[2 + i]);
+            }
         }
     }
     private void Save() 
     {
         Debug.Log("SAVE");
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine(ResourceManager.Instance.Save());
-        sb.AppendLine(QuestManager.Instance.Save());
+        sb.AppendLine(GameManager.GetManager<ResourceManager>().Save());
+        sb.AppendLine(GameManager.GetManager<QuestManager>().Save());
         Factory[] factories = FindObjectsOfType<Factory>();
         for (int i = 0; i < factories.Length; ++i) 
         {
@@ -53,7 +49,7 @@ public class SaveManager : MonoBehaviour
         }
         if (File.Exists(Path.Combine(Application.persistentDataPath, "save/save.txt"))) 
         {
-            Load();
+            StartCoroutine(Load());
         }
     }
     private void OnApplicationFocus(bool hasFocus)

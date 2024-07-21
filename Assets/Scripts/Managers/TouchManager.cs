@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchManager : MonoBehaviour
+public class TouchManager : Manager
 {
     private Camera mainCamera;
     
@@ -11,15 +11,7 @@ public class TouchManager : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
 
-    #region Singleton
-    public static TouchManager Instance;
-    void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-    #endregion
-
+    
     private void Start()
     {
         mainCamera = Camera.main;
@@ -54,7 +46,7 @@ public class TouchManager : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Building")) 
                 {
-                    UIManager.Instance.OpenBuildingMenu(hit.transform.GetComponent<Building>());
+                    hit.transform.GetComponent<Building>().ShowUI();
                     SetIgnoreMode(true);
                 }
                 Debug.Log("Рейкаст попал в объект: " + hit.collider.gameObject.name);

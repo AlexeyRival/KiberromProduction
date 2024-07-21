@@ -9,6 +9,12 @@ public class Market : Building
     public int bestFitResource;
     public float bestFitMultiplier;
 
+    public override void ShowUI()
+    {
+        MarketWindow window = (MarketWindow)Instantiate(UIPrefab, GameManager.GetUIRoot().transform);
+        window.SetContext(this);
+        window.Show();
+    }
     void Update()
     {
         timer -= Time.deltaTime;
@@ -16,7 +22,7 @@ public class Market : Building
         {
             timer = bestFitRatio;
             bestFitMultiplier = 1 + Random.Range(1, 21) * .15f;
-            bestFitResource = Random.Range(0, ResourceManager.Instance.ResourcesCount);
+            bestFitResource = Random.Range(0, GameManager.Instance.GetResourcesTypes().Length);
         }
     }
 }

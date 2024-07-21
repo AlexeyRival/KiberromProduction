@@ -17,13 +17,22 @@ public class Factory : Building
     private bool isProduced = false;
     private bool upgradeShook;
 
+    private ResourceManager resourceManager;
+
+    public override void ShowUI()
+    {
+        FactoryWindow window = (FactoryWindow)Instantiate(UIPrefab, GameManager.GetUIRoot().transform);
+        window.SetContext(this);
+        window.Show();
+    }
+
     public void TryUpgrade()
     {
         if (OnMaxLevel()) return;
         if (upgradeShook) return;
-        if (ResourceManager.Instance.IsEnoughtMoney(GetNextLevel().price))
+        if (resourceManager.IsEnoughtMoney(GetNextLevel().price))
         {
-            ResourceManager.Instance.DeltaMoney(-GetNextLevel().price);
+            resourceManager.DeltaMoney(-GetNextLevel().price);
             Upgrade();
         }
     }
@@ -42,11 +51,21 @@ public class Factory : Building
     {
         return level >= upgrades.Length-1;
     }
+    
+    public Upgrade GetCurrentLevel() 
+    {
+        return upgrades[level];
+    }
     public Upgrade GetNextLevel() 
     {
         return upgrades[level + 1];
     }
-    void Update()
+
+    private void Start()
+    {
+        resourceManager = GameManager.GetManager<ResourceManager>();
+    }
+    private void Update()
     {
         upgradeShook = false;
         if (recipes[selectedRecipe].Empty) return;
@@ -57,7 +76,7 @@ public class Factory : Building
         {
             if (!isProduced) 
             {
-                ResourceManager.Instance.DeltaResource(recipes[selectedRecipe].result, 1);
+                resourceManager.DeltaResource(recipes[selectedRecipe].result, 1);
                 isProduced = true;
             }
 
@@ -81,7 +100,7 @@ public class Factory : Building
             bool canProduce = true;
             for (int i = 0; i < recipes[selectedRecipe].materials.Length; ++i)
             {
-                if (!ResourceManager.Instance.IsEnoughtResource(recipes[selectedRecipe].materials[i], 1))
+                if (!resourceManager.IsEnoughtResource(recipes[selectedRecipe].materials[i], 1))
                 {
                     canProduce = false;
                     break;
@@ -91,7 +110,7 @@ public class Factory : Building
             {
                 for (int i = 0; i < recipes[selectedRecipe].materials.Length; ++i)
                 {
-                    ResourceManager.Instance.DeltaResource(recipes[selectedRecipe].materials[i], -1);
+                    resourceManager.DeltaResource(recipes[selectedRecipe].materials[i], -1);
                 }
                 return true;
             }

@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : Manager
 {
     [SerializeField] private Resource[] resources;
     [SerializeField] private Dictionary<Resource, int> resourcesCount;
     public int ResourcesCount { get { return resources.Length; } }
     public int money = 100;
 
-    #region Singleton
-    public static ResourceManager Instance;
-    void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-    #endregion
+    private UIManager uiManager;
 
     private void Start()
     {
@@ -26,8 +19,9 @@ public class ResourceManager : MonoBehaviour
         {
             resourcesCount.Add(resources[i], 0);
         }
-        UIManager.Instance.DrawResources(resourcesCount);
-        UIManager.Instance.DrawMoney(money);
+        uiManager =GameManager.GetManager<UIManager>();
+        uiManager.DrawResources(resourcesCount);
+        uiManager.DrawMoney(money);
     }
 
     public void SellResource(Resource res,int price,int count) 
@@ -40,7 +34,7 @@ public class ResourceManager : MonoBehaviour
     public void DeltaMoney(int delta) 
     { 
         money += delta; 
-        UIManager.Instance.DrawMoney(money);
+        GameManager.Instance.DrawMoney(money);
     }
     public bool IsEnoughtMoney(int required) 
     {
@@ -49,9 +43,12 @@ public class ResourceManager : MonoBehaviour
     public void DeltaResource(Resource resource, int delta) 
     {
         resourcesCount[resource] += delta;
-        UIManager.Instance.DrawResources(resourcesCount);
-        if (delta > 0) QuestManager.Instance.ResourceProduced(resource);
+        if (delta > 0) GameManager.Instance.ResourceProduced(resource);
     }
+    public void DeltaResource(int id, int delta) { DeltaResource(resources[id], delta); }
+
+    public Dictionary<Resource, int> GetResources() { return resourcesCount; }
+    public Resource[] GetResourcesTypes() { return resources; }
     public bool IsEnoughtResource(Resource resource, int count) 
     {
         return resourcesCount[resource] >= count;

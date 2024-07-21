@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager : Manager
 {
     public Level[] levels;
     public int currentLevel = 0;
     private float timer=1;
     private int prevCompleted;
 
-    #region Singleton
-    public static QuestManager Instance;
-    void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-    #endregion
+    [Header("UI")]
+    [SerializeField] private Button openQuestButton;
+    [Header("Prefabs")]
+    [SerializeField] private QuestWindow questWindow;
+    [SerializeField] private GameObject droppedStar;
+
 
     private void Start()
     {
@@ -25,6 +24,7 @@ public class QuestManager : MonoBehaviour
         {
             levels[i].Start();
         }
+        openQuestButton.onClick.AddListener(OpenUI);
     }
     private void Update()
     {
@@ -35,6 +35,14 @@ public class QuestManager : MonoBehaviour
             CheckQuests();
         }
     }
+
+    private void OpenUI() 
+    {
+        QuestWindow qw =  Instantiate(questWindow, GameManager.GetUIRoot().transform);
+        qw.SetContext(this);
+        qw.Show();
+    }
+
     private void CheckQuests() 
     {
         int completeCount = 0;
@@ -46,8 +54,12 @@ public class QuestManager : MonoBehaviour
         if (completeCount > prevCompleted) 
         {
             prevCompleted = completeCount;
-            UIManager.Instance.QuestCompleted();
+            QuestCompleted();
         }
+    }
+    private void QuestCompleted()
+    {
+        Instantiate(droppedStar, openQuestButton.transform.position, Quaternion.identity, GameManager.GetUIRoot());
     }
     public Quest[] GetQuests() 
     {
